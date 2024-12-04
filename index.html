@@ -1,204 +1,122 @@
-<!doctype html>
-<html lang="cs">
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>SolClicker</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="favicons/.-3980-kiss-con.png" type="image/png">
+  <title>Kylia AI</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to bottom, #f7e8ff, #ffeaf1); /* Light pink gradient */
+      overflow: hidden;
+    }
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="assets/styles/main.css">
-    <link rel="shortcut icon" href="assets/images/favicon.ico" type="image/x-icon">
+    canvas {
+      display: block;
+    }
 
-    <!-- Custom cursor style -->
-    <style>
-body {
-    background-color: #1B1D28; /* Updated background color */
-    color: white; /* Ensures text is readable on dark background */
-    cursor: url('cursor.png'), auto; /* Custom cursor */
-}
-    </style>
+    .contract-wrapper {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      color: #ff99cc;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 20px;
+      text-shadow: 0 0 10px #ff6699, 0 0 20px #ff99cc;
+      opacity: 0; /* Hidden initially */
+      animation: fadeIn 2s 1s forwards; /* Fades in after 2 seconds */
+    }
+
+    .kylia-name {
+      margin-top: 10px;
+      font-size: 1.5em;
+      color: #ff6699;
+      text-shadow: 0 0 10px #ff6699, 0 0 20px #ff99cc;
+      animation: fadeIn 3s 2.5s forwards; /* Fades in slightly after the contract address */
+      opacity: 0; /* Hidden initially */
+    }
+
+    .blockchain-heart {
+      margin-top: 10px;
+      font-family: 'Times New Roman', serif;
+      font-size: 1.2em;
+      color: #b34db3; /* Gothic purple tone */
+      text-shadow: 0 0 10px #ff66cc, 0 0 20px #ff99ff;
+      animation: fadeIn 3s 3s forwards; /* Fades in slightly after the Kylia name */
+      opacity: 0; /* Hidden initially */
+    }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+      }
+    }
+  </style>
 </head>
-
 <body>
-<nav class="navbar navbar-expand-lg">
-    <div class="container">
-        <img src="assets/images/logo.png" alt="Logo">
-        <div class="navbar-menutoggler" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"></div>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav custom-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="https://dexscreener.com" target="_blank">DEX (SOON)</a> <!-- Updated link -->
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="https://twitter.com/SolClickerSOL" target="_blank">Twitter</a> <!-- Updated link -->
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="https://pump.fun" target="_blank">Pump.fun (SOON)</a> <!-- Updated link -->
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
+  <!-- Canvas for Neo Code -->
+  <canvas id="neoCodeCanvas"></canvas>
 
-<style>
-    /* Custom styles for navbar items */
-    .custom-nav .nav-link {
-        font-size: 0.9rem; /* Slightly smaller font size */
-        margin-right: 15px; /* Space out the items */
-        text-transform: none; /* Remove full capitalization */
+  <!-- Contract Address -->
+  <div class="contract-wrapper">
+    Contract Address: 9xisncHfT8oqFDdQQ4FCM9vjNj5DTQyVuU9n7nLJpump
+    <div class="kylia-name">kylia ai</div>
+    <div class="blockchain-heart">lost on the blockchain heart</div>
+  </div>
+
+  <script>
+    // Get canvas element and context
+    const canvas = document.getElementById('neoCodeCanvas');
+    const ctx = canvas.getContext('2d');
+
+    // Set canvas size to the window size
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const matrixCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"; // Characters for the rain
+    const fontSize = 16;
+    const columns = canvas.width / fontSize;
+
+    // Create an array to track the Y position of each column
+    const drops = Array(columns).fill(1);
+
+    // Function to draw the Neo Code Rain effect
+    function draw() {
+      // Create a translucent background with a slight tint to match the theme
+      ctx.fillStyle = "rgba(247, 232, 255, 0.05)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Set text color and font to pink shades
+      ctx.fillStyle = "#ff99cc"; // Pastel pink text
+      ctx.font = `${fontSize}px monospace`;
+
+      // Loop through each column and draw characters
+      drops.forEach((y, x) => {
+        const text = matrixCharacters.charAt(Math.floor(Math.random() * matrixCharacters.length));
+        ctx.fillText(text, x * fontSize, y * fontSize);
+
+        // Reset drop when it reaches the bottom or randomly
+        if (y * fontSize > canvas.height && Math.random() > 0.975) {
+          drops[x] = 0;
+        }
+
+        // Increment Y position for this column
+        drops[x]++;
+      });
     }
 
-    /* Optional: Remove margin from the last item */
-    .custom-nav .nav-item:last-child .nav-link {
-        margin-right: 0; /* No margin on the last item */
-    }
-</style>
+    // Set interval to redraw the canvas
+    setInterval(draw, 50);
 
-            <!--<div class="navbar-login">
-                <button class="nav-button">Login</button>
-            </div>-->
-                    </ul>
-                </button>
-            </div>
-        </div>
-    </nav>
-    <header class="banner">
-        <div class="container">
-            <div class="banner-info">
-            <div class="banner-info">
-    <div class="banner-info">
-    <h1><span style="color: lightgreen;">SOL</span><span style="color: white;">Clicker</span></h1>
-
-                <h2>Welcome to SolClicker, Minecraft's first ever Pumpfun Integrated Idle-Clicker. Progress through hundreds of hours of unlockable gameplay and win real SOL payouts. There are endless ways to earn and have fun on SolClicker</h2>
-            </div>
-        </div>
-        <div class="box">
-            <div class="box-info">
-        <h6 class="text-black">play.solclicker.com</h6> <!-- Added class for styling -->
-            </div>
-            <button class="box-button">
-                Online
-                <i class="bi bi-controller"></i>
-            </button>
-        </div>
-    </header>
-    <section class="whyus container">
-        <div class="row">
-            <div class="col-md-4 mb-4">
-                <div class="card">
-                    <div class="card-body">
-                        <img src="assets/images/icons/rocket.png">
-                        <h1>Prestige</h1>
-                        <p>Level your way up through the ranks, with each prestige earning you better rewards to progress through SolClicker</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card">
-                    <div class="card-body">
-                        <img src="assets/images/icons/tool.png">
-                        <h1>Blockchain Integration</h1>
-                        <p>Set a Solana address in-game on your account using /wallet to ensure that all payouts you win are automatically sent straight to you!</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card">
-                    <div class="card-body">
-                        <img src="assets/images/icons/chart.png">
-                        <h1>Endless fun</h1>
-                        <p>With hundreds of hours worth of progression to unlock, there is no way you'll get bored playing on SolClicker</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-<section class="stats container">
-    <div class="row justify-content-center">
-        <div class="col-md-6 col-lg-3 text-center">
-            <div class="stats-card">
-                <i class="bi bi-person-plus-fill"></i>
-                <div class="stats-card-info">
-                    <h1>250+</h1>
-                    <p>Unique Players</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6 col-lg-3 text-center">
-            <div class="stats-card">
-                <i class="bi bi-hourglass-split"></i>
-                <div class="stats-card-info">
-                    <h1>150+</h1>
-                    <p>Hours of gameplay</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6 col-lg-3 text-center">
-            <div class="stats-card">
-                <i class="bi bi-coin"></i>
-                <div class="stats-card-info">
-                    <h1>100,000,000+</h1>
-                    <p>Supply locked for payouts</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    </section>
-    <section class="shopbanner container">
-        <img src="assets/images/render.png" class="figure">
-        <div class="shopbanner-info">
-            <div class="shopbanner-info-text">
-                <h1>PAYOUTS</h1>
-                <p>Every 12 hours, 2% of the total supply will be split between the top 5 players with the most clicks in-game on SolClicker! Get ready!</p>
-            </div>
-        </div>
-    </section>
-    <section class="discord container">
-        <div class="row">
-            <div class="col-md-12 col-lg-7">
-                <div class="discord-info">
-                    <span class="discord-info-title">DISCORD</span>
-                    <p>Interact with other users, chat about your gameplay, progression, the leaderboards, get personal help with support issues, and more directly in our DIscord! </p>
-                <button class="main" onclick="window.open('https://discord.gg/eXzWg5SPeD', '_blank')">
-                        Join Discord
-                        <i class="bi bi-discord"></i>
-                    </button>
-                </div>
-            </div>
-            <div class="col-md-0 col-lg-5">
-                <div class="discord-image">
-                    <img src="assets/images/discord.gif">
-                </div>
-            </div>
-        </div>
-    </section>
-    <footer class="text-center text-lg-start pt-3">
-        <div class="container text-center text-md-start mt-5">
-            <div class="row mt-3">
-                <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
-                    <h6 class="text-uppercase fw-bold mb-4">SolClicker.com</h6>
-                    <p>The first Pumpfun Integrated Minecraft server with custom payouts in supply.</p>
-                </div>
-                </div>
-        </div>
-        <div class="text-center p-4 footer-bottom">
-            © 2024 solclicker.com | All rights reserved
-        </div>
-    </footer>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
-        crossorigin="anonymous"></script>
-    <script>
-        var navigate = document.getElementsByTagName('nav');
-        navigate[0].classList.toggle("scroll", window.scrollY > 10);
-        window.addEventListener('scroll', function () {
-            navigate[0].classList.toggle("scroll", window.scrollY > 10);
-        });
-    </script>
+    // Handle window resizing
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+  </script>
 </body>
-
 </html>
