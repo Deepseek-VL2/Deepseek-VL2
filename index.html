@@ -31,7 +31,7 @@
       animation: fadeIn 2s 1s forwards; /* Fades in after 2 seconds */
     }
 
-    .Kylia-name {
+    .kylia-name {
       margin-top: 10px;
       font-size: 1.5em;
       color: #ff6699;
@@ -58,20 +58,20 @@
   </style>
 </head>
 <body>
-  <!-- nvas for Neo Code -->
-  <nvas id="neoCodenvas"></nvas>
+  <!-- Canvas for Neo Code -->
+  <canvas id="neoCodeCanvas"></canvas>
 
   <!-- Contract Address -->
   <div class="contract-wrapper">
-    Contract Address: Coming Soon
-    <div class="Kylia-name">Kylia ai</div>
+    Contract Address: 9xisncHfT8oqFDdQQ4FCM9vjNj5DTQyVuU9n7nLJpump
+    <div class="kylia-name">kylia ai</div>
     <div class="blockchain-heart">lost on the blockchain heart</div>
   </div>
 
   <script>
-    // Get nvas element and context
-    const nvas = document.getElementById('neoCodenvas');
-    const ctx = nvas.getContext('2d');
+    // Get canvas element and context
+    const canvas = document.getElementById('neoCodeCanvas');
+    const ctx = canvas.getContext('2d');
 
     // Set canvas size to the window size
     canvas.width = window.innerWidth;
